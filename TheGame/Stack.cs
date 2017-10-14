@@ -21,13 +21,17 @@ namespace TheGame
 
         public bool SetCardOnStack(int value)
         {
-            if (Direction == Direction.Ascending && CurrentValue < value)
+            if (CanBeSet(value))
                 CurrentValue = value;
-            else if (Direction == Direction.Discending && CurrentValue > value)
-                CurrentValue = value;
+            return CurrentValue == value;            
+        }
+
+        public bool CanBeSet(int value)
+        {
+            if (Direction == Direction.Ascending)
+                return (CurrentValue < value || CurrentValue - 10 == value);
             else
-                return false;
-            return true;                
+                return (CurrentValue > value || CurrentValue + 10 == value);
         }
     }
 
