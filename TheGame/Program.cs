@@ -11,6 +11,7 @@ namespace TheGame
         static void Main(string[] args)
         {
             List<Stack> stacks = new List<Stack>();
+            SituationEsit currentSituation = SituationEsit.KeepGoing;
             Stack s1 = new Stack(Direction.Ascending);
             Stack s2 = new Stack(Direction.Ascending);
             Stack s3 = new Stack(Direction.Discending);
@@ -36,7 +37,14 @@ namespace TheGame
                     int stack = int.Parse(Console.ReadLine());
                     var consideredStack = (stack == 1) ? s1 : (stack == 2) ? s2 : (stack == 3) ? s3 : s4;
                     mano.SetCard(value, consideredStack);
-                } while (true);
+                } while ((currentSituation = CheckSituation(stacks, mano)) == SituationEsit.KeepGoing);
+                if (currentSituation == SituationEsit.Lost)
+                {
+                    Console.Clear();
+                    Console.WriteLine("YOU LOSE");
+                    Console.Read();
+                }
+
             }
         }
 
@@ -70,6 +78,28 @@ namespace TheGame
             Console.WriteLine(" ---------\t\t ---------");
             Console.WriteLine();
             Console.WriteLine();
+        }
+
+        public static SituationEsit CheckSituation(List<Stack> s, Hand h)
+        {
+            if (h.Cards.Count == 0)
+                return SituationEsit.Won;
+
+            int options = 0;
+            foreach (Stack currentStack in s)
+                foreach (int card in h.Cards)
+                {
+                    if (currentStack.CanBeSet(card))
+                        options++;                
+                }
+            return (options == 0) ? SituationEsit.Lost : SituationEsit.KeepGoing;
+        }
+
+        public enum SituationEsit
+        {
+            KeepGoing,
+            Lost,
+            Won
         }
     }
 }
