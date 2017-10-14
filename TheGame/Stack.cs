@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheGame
 {
-    class Stack
+    public class Stack
     {
         public Direction Direction { get; set; }
         public int CurrentValue { get; set; }
@@ -35,7 +35,7 @@ namespace TheGame
         }
     }
 
-    enum Direction
+    public enum Direction
     {
         Ascending,
         Discending

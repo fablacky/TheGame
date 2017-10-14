@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheGame
 {
-    class Hand
+    public class Hand
     {
         public List<int> Cards { get; set; }
         private Deck _deck { get; set; }
