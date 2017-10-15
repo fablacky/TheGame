@@ -29,13 +29,10 @@ namespace TheGame
                     {
                         Console.Clear();
                         DrawTable(stacks);
-                        Console.WriteLine(mano.PrintHand());
-                        Console.WriteLine("Che carta metti?");
-                        value = int.Parse(Console.ReadLine());
+                        value = PickCard(mano);
                     } while (!mano.ValueIsInHand(value));
-                    Console.WriteLine("Su quale stack?");
-                    int stack = int.Parse(Console.ReadLine());
-                    var consideredStack = (stack == 1) ? s1 : (stack == 2) ? s2 : (stack == 3) ? s3 : s4;
+                    int stack = ReadStack();
+                    var consideredStack = (stack == 1) ? s1 : (stack == 2) ? s2 : (stack == 3) ? s3 : (stack == 4) ? s4 : null;
                     mano.SetCard(value, consideredStack);
                 } while ((currentSituation = CheckSituation(stacks, mano)) == SituationEsit.KeepGoing);
                 if (currentSituation == SituationEsit.Lost)
@@ -47,7 +44,36 @@ namespace TheGame
             }
         }
 
+        public int PickCard(Hand h)
+        {
+            while (true)
+            {
+                Console.WriteLine("Pick a card to set");
+                Console.WriteLine(h.PrintHand());
+                string input = Console.ReadLine();
+                int chosen = 0;
+                int.TryParse(input, out chosen);
+                if (h.ValueIsInHand(chosen))
+                    return chosen;
+                else Console.WriteLine(("No valid card was input, please try again."));
+            }
+        }
 
+
+
+        public int ReadStack()
+        {
+            while (true)
+            {
+                Console.WriteLine("Input target stack");
+                string input = Console.ReadLine();
+                int stack = 0;
+                int.TryParse(input, out stack);
+                if (stack > 0 && stack < 5)
+                    return stack;
+                else Console.WriteLine(("No valid stack was input, please try again."));
+            }
+        }
 
 
         public void DrawTable(List<Stack> s)
